@@ -1,24 +1,23 @@
-import logo from './logo.svg';
-import './App.css';
+import { BrowserRouter, Routes, Route } from 'react-router-dom';
+import Landing from './pages/Landing';
+import Panel from './pages/Panel';
+import Torneos from './pages/Torneos';
+import NuevoTorneo from './pages/NuevoTorneo';
+import Jugadores from './pages/Jugadores';
+import Decklists from './pages/Decklists';
 
 function App() {
   return (
-    <div className="App">
-      <header className="App-header">
-        <img src={logo} className="App-logo" alt="logo" />
-        <p>
-          Edit <code>src/App.js</code> and save to reload.
-        </p>
-        <a
-          className="App-link"
-          href="https://reactjs.org"
-          target="_blank"
-          rel="noopener noreferrer"
-        >
-          Learn React
-        </a>
-      </header>
-    </div>
+    <BrowserRouter>
+      <Routes>
+        <Route path="/" element={<Landing />} />
+        <Route path="/panel" element={<Panel />} />
+        <Route path="/torneos" element={<Torneos />} />
+        <Route path="/nuevo-torneo" element={<NuevoTorneo />} />
+        <Route path="/jugadores" element={<Jugadores />} />
+        <Route path="/decklists" element={<Decklists />} />
+      </Routes>
+    </BrowserRouter>
   );
 }
 

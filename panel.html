@@ -1,0 +1,312 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Cardex — Panel de gestión</title>
+<link href="https://fonts.googleapis.com/css2?family=Syne:wght@400;500;600;700;800&family=DM+Sans:wght@300;400;500&display=swap" rel="stylesheet">
+<style>
+:root{--black:#0a0a0f;--white:#f5f4f0;--purple:#6c5ce7;--purple-light:#a29bfe;--purple-dim:#2d2a5e;--green:#00b894;--amber:#fdcb6e;--red:#e17055;--surface:#13121a;--surface2:#1e1c2a;--border:rgba(255,255,255,0.07);--muted:rgba(245,244,240,0.45)}
+*{box-sizing:border-box;margin:0;padding:0}
+body{background:var(--black);color:var(--white);font-family:'DM Sans',sans-serif;font-size:13px;display:flex;height:100vh;overflow:hidden}
+h1,h2,h3,.syne{font-family:'Syne',sans-serif}
+.sidebar{width:220px;background:var(--surface);border-right:0.5px solid var(--border);display:flex;flex-direction:column;flex-shrink:0;height:100vh}
+.sidebar-logo{padding:18px 16px;border-bottom:0.5px solid var(--border);display:flex;align-items:center;gap:10px}
+.logo-mark{width:28px;height:28px;background:var(--purple);border-radius:7px;display:flex;align-items:center;justify-content:center;font-family:'Syne',sans-serif;font-weight:800;font-size:13px;color:white;flex-shrink:0}
+.logo-text{font-size:16px;font-weight:700;letter-spacing:-0.5px;font-family:'Syne',sans-serif}
+.store-pill{margin:12px;background:var(--surface2);border:0.5px solid var(--border);border-radius:8px;padding:10px 12px}
+.store-name{font-size:12px;font-weight:500;font-family:'Syne',sans-serif}
+.store-plan{font-size:10px;color:var(--purple-light);margin-top:2px}
+.nav-section{padding:8px 12px 4px;font-size:10px;color:var(--muted);font-family:'Syne',sans-serif;font-weight:600;letter-spacing:1px;text-transform:uppercase}
+.nav-item{display:flex;align-items:center;gap:10px;padding:9px 16px;cursor:pointer;color:var(--muted);font-size:13px;transition:all 0.15s;margin:1px 6px;border-radius:7px}
+.nav-item:hover{background:rgba(255,255,255,0.05);color:var(--white)}
+.nav-item.on{background:rgba(108,92,231,0.15);color:var(--white)}
+.nav-item .ni-icon{width:16px;font-size:14px;text-align:center;flex-shrink:0}
+.nav-badge{margin-left:auto;background:var(--purple);color:white;font-size:10px;padding:2px 6px;border-radius:10px;font-family:'Syne',sans-serif;font-weight:600}
+.sidebar-bottom{margin-top:auto;padding:12px;border-top:0.5px solid var(--border)}
+.sb-user{display:flex;align-items:center;gap:10px}
+.sb-avatar{width:32px;height:32px;border-radius:50%;background:var(--purple-dim);display:flex;align-items:center;justify-content:center;font-size:12px;font-weight:600;font-family:'Syne',sans-serif;color:var(--purple-light);flex-shrink:0}
+.sb-name{font-size:12px;font-weight:500}
+.sb-role{font-size:10px;color:var(--muted)}
+.main{flex:1;display:flex;flex-direction:column;overflow:hidden}
+.topbar{padding:14px 24px;border-bottom:0.5px solid var(--border);display:flex;align-items:center;justify-content:space-between;background:var(--surface);flex-shrink:0}
+.topbar-title{font-size:16px;font-weight:700;font-family:'Syne',sans-serif}
+.topbar-right{display:flex;gap:8px;align-items:center}
+.tb-btn{padding:7px 14px;border-radius:7px;font-size:12px;cursor:pointer;font-family:'DM Sans',sans-serif;border:none;transition:all 0.15s;font-weight:500}
+.tb-btn-ghost{background:rgba(255,255,255,0.06);color:var(--white)}
+.tb-btn-ghost:hover{background:rgba(255,255,255,0.1)}
+.tb-btn-purple{background:var(--purple);color:white}
+.tb-btn-purple:hover{background:#5a4dd1}
+.content{flex:1;overflow-y:auto;padding:20px 24px}
+.page{display:none}.page.on{display:block}
+.stats-row{display:grid;grid-template-columns:repeat(4,1fr);gap:12px;margin-bottom:20px}
+.stat{background:var(--surface);border:0.5px solid var(--border);border-radius:10px;padding:14px}
+.stat-num{font-size:22px;font-weight:700;font-family:'Syne',sans-serif;margin-bottom:2px}
+.stat-label{font-size:11px;color:var(--muted)}
+.stat-delta{font-size:11px;margin-top:4px}
+.delta-up{color:var(--green)}
+.section-hdr{display:flex;align-items:center;justify-content:space-between;margin-bottom:12px}
+.section-hdr h3{font-size:14px;font-weight:600;font-family:'Syne',sans-serif}
+.card{background:var(--surface);border:0.5px solid var(--border);border-radius:10px;margin-bottom:16px}
+.card-body{padding:14px}
+.torneo-row{display:flex;align-items:center;gap:12px;padding:12px 14px;border-bottom:0.5px solid var(--border);cursor:pointer;transition:background 0.15s}
+.torneo-row:last-child{border-bottom:none}
+.torneo-row:hover{background:rgba(255,255,255,0.03)}
+.t-status{width:8px;height:8px;border-radius:50%;flex-shrink:0}
+.t-info{flex:1}
+.t-name{font-size:13px;font-weight:500;margin-bottom:2px;font-family:'Syne',sans-serif}
+.t-meta{font-size:11px;color:var(--muted)}
+.t-badge{font-size:10px;padding:2px 8px;border-radius:8px;font-family:'Syne',sans-serif;font-weight:600;flex-shrink:0}
+.badge-mtg{background:rgba(108,92,231,0.2);color:#a29bfe}
+.badge-pk{background:rgba(253,203,110,0.15);color:#fdcb6e}
+.badge-ygo{background:rgba(0,184,148,0.15);color:#00b894}
+.t-players{font-size:11px;color:var(--muted);text-align:right;flex-shrink:0;width:60px}
+.t-players strong{display:block;font-size:13px;color:var(--white);font-weight:500;font-family:'Syne',sans-serif}
+.t-actions{display:flex;gap:6px;flex-shrink:0}
+.t-action{padding:5px 10px;border-radius:6px;font-size:11px;cursor:pointer;border:none;font-family:'DM Sans',sans-serif;font-weight:500;transition:all 0.15s}
+.ta-ghost{background:rgba(255,255,255,0.06);color:var(--white)}
+.ta-green{background:rgba(0,184,148,0.15);color:var(--green)}
+.ta-purple{background:rgba(108,92,231,0.2);color:var(--purple-light)}
+.players-table{width:100%;border-collapse:collapse}
+.players-table th{font-size:10px;color:var(--muted);font-family:'Syne',sans-serif;font-weight:600;letter-spacing:0.5px;padding:8px 14px;text-align:left;border-bottom:0.5px solid var(--border)}
+.players-table td{padding:10px 14px;border-bottom:0.5px solid var(--border);font-size:12px;vertical-align:middle}
+.players-table tr:last-child td{border:none}
+.p-avatar{width:28px;height:28px;border-radius:50%;display:flex;align-items:center;justify-content:center;font-size:11px;font-weight:600;font-family:'Syne',sans-serif;flex-shrink:0}
+.p-cell{display:flex;align-items:center;gap:10px}
+.p-name{font-size:12px;font-weight:500}
+.p-sub{font-size:10px;color:var(--muted)}
+.wr-pill{font-size:10px;padding:2px 8px;border-radius:8px;font-family:'Syne',sans-serif;font-weight:600}
+.wr-good{background:rgba(0,184,148,0.15);color:var(--green)}
+.wr-mid{background:rgba(253,203,110,0.12);color:var(--amber)}
+.wr-bad{background:rgba(225,112,85,0.15);color:var(--red)}
+.elo-num{color:var(--purple-light);font-weight:500;font-family:'Syne',sans-serif}
+.bracket-wrap{overflow-x:auto;padding:8px 0}
+.bracket{display:flex;gap:0;align-items:stretch}
+.bracket-round{display:flex;flex-direction:column;min-width:160px}
+.br-title{font-size:10px;color:var(--muted);font-family:'Syne',sans-serif;font-weight:600;letter-spacing:1px;text-align:center;padding:8px 0;text-transform:uppercase}
+.br-matches{display:flex;flex-direction:column;justify-content:space-around;flex:1;gap:8px;padding:0 8px}
+.br-match{background:var(--surface2);border:0.5px solid var(--border);border-radius:8px;overflow:hidden}
+.br-player{display:flex;align-items:center;justify-content:space-between;padding:7px 10px;font-size:12px;border-bottom:0.5px solid var(--border)}
+.br-player:last-child{border:none}
+.br-player.winner{background:rgba(108,92,231,0.12)}
+.br-player.winner .bp-name{color:var(--purple-light);font-weight:500}
+.bp-name{font-size:11px}
+.bp-score{font-size:12px;font-weight:600;font-family:'Syne',sans-serif}
+.form-grid{display:grid;grid-template-columns:1fr 1fr;gap:12px}
+.form-group{display:flex;flex-direction:column;gap:5px}
+.form-group.full{grid-column:1/-1}
+.form-label{font-size:11px;color:var(--muted);font-family:'Syne',sans-serif;font-weight:600;letter-spacing:0.3px}
+.form-input,.form-select{background:var(--surface2);border:0.5px solid var(--border);border-radius:7px;padding:9px 12px;color:var(--white);font-size:13px;font-family:'DM Sans',sans-serif;outline:none;transition:border-color 0.2s;width:100%}
+.form-input:focus,.form-select:focus{border-color:var(--purple)}
+.form-select option{background:var(--surface2)}
+.form-input::placeholder{color:var(--muted)}
+.metrics-grid{display:grid;grid-template-columns:1fr 1fr;gap:12px;margin-bottom:16px}
+.metric-card{background:var(--surface);border:0.5px solid var(--border);border-radius:10px;padding:14px}
+.metric-card h3{font-size:12px;font-weight:600;font-family:'Syne',sans-serif;margin-bottom:12px;color:var(--muted)}
+.bar-row{display:flex;align-items:center;gap:8px;margin-bottom:8px;font-size:11px}
+.bar-name{width:90px;color:var(--muted);flex-shrink:0}
+.bar-track{flex:1;height:5px;background:var(--surface2);border-radius:3px;overflow:hidden}
+.bar-fill{height:100%;border-radius:3px}
+.bar-pct{width:28px;text-align:right;color:var(--white)}
+.day-row{display:flex;align-items:flex-end;gap:4px;height:60px;margin-bottom:6px}
+.day-bar{flex:1;border-radius:3px 3px 0 0}
+.day-labels{display:flex;gap:4px}
+.day-label{flex:1;text-align:center;font-size:9px;color:var(--muted)}
+.notif{position:fixed;bottom:20px;right:20px;background:var(--surface);border:0.5px solid var(--purple);border-radius:10px;padding:12px 16px;font-size:12px;color:var(--white);display:none;z-index:999}
+.notif.show{display:block;animation:slideIn 0.3s ease}
+@keyframes slideIn{from{opacity:0;transform:translateY(10px)}to{opacity:1;transform:translateY(0)}}
+</style>
+</head>
+<body>
+<div class="sidebar">
+  <div class="sidebar-logo">
+    <div class="logo-mark">C</div>
+    <div class="logo-text">Cardex</div>
+  </div>
+  <div class="store-pill">
+    <div class="store-name">Card Castle BCN</div>
+    <div class="store-plan">Plan piloto · Gratis</div>
+  </div>
+  <div class="nav-section">Principal</div>
+  <div class="nav-item on" onclick="goPage('dashboard',this)"><span class="ni-icon">▦</span>Dashboard</div>
+  <div class="nav-item" onclick="goPage('torneos',this)"><span class="ni-icon">🏆</span>Mis torneos<span class="nav-badge">3</span></div>
+  <div class="nav-item" onclick="goPage('nuevo',this)"><span class="ni-icon">＋</span>Nuevo torneo</div>
+  <div class="nav-item" onclick="goPage('jugadores',this)"><span class="ni-icon">👤</span>Jugadores</div>
+  <div class="nav-section">Análisis</div>
+  <div class="nav-item" onclick="goPage('metricas',this)"><span class="ni-icon">📊</span>Métricas</div>
+  <div class="nav-item" onclick="goPage('bracket',this)"><span class="ni-icon">⚡</span>Bracket en vivo</div>
+  <div class="nav-section">Cuenta</div>
+  <div class="nav-item" onclick="notify('Configuración próximamente')"><span class="ni-icon">⚙️</span>Configuración</div>
+  <div class="sidebar-bottom">
+    <div class="sb-user">
+      <div class="sb-avatar">JM</div>
+      <div><div class="sb-name">Jordi Mas</div><div class="sb-role">Organizador</div></div>
+    </div>
+  </div>
+</div>
+<div class="main">
+  <div class="topbar">
+    <div class="topbar-title" id="topbar-title">Dashboard</div>
+    <div class="topbar-right">
+      <button class="tb-btn tb-btn-ghost" onclick="notify('2 inscripciones nuevas en Modern Showdown')">🔔 2</button>
+      <button class="tb-btn tb-btn-purple" onclick="goPage('nuevo',document.querySelector('[onclick*=nuevo]'))">+ Nuevo torneo</button>
+    </div>
+  </div>
+  <div class="content">
+
+    <div id="dashboard" class="page on">
+      <div class="stats-row">
+        <div class="stat"><div class="stat-num" style="color:var(--purple-light)">12</div><div class="stat-label">Torneos este mes</div><div class="stat-delta delta-up">↑ 3 vs mes pasado</div></div>
+        <div class="stat"><div class="stat-num" style="color:var(--green)">284</div><div class="stat-label">Jugadores únicos</div><div class="stat-delta delta-up">↑ 42 nuevos</div></div>
+        <div class="stat"><div class="stat-num" style="color:var(--amber)">€840</div><div class="stat-label">Inscripciones cobradas</div><div class="stat-delta delta-up">↑ 18% vs mes pasado</div></div>
+        <div class="stat"><div class="stat-num" style="color:var(--green)">94%</div><div class="stat-label">Tasa asistencia</div><div class="stat-delta delta-up">↑ vs 78% sin Cardex</div></div>
+      </div>
+      <div class="section-hdr"><h3>Próximos torneos</h3><button class="tb-btn tb-btn-ghost" onclick="goPage('torneos',document.querySelector('[onclick*=torneos]'))">Ver todos →</button></div>
+      <div class="card">
+        <div class="torneo-row"><div class="t-status" style="background:var(--green)"></div><div class="t-info"><div class="t-name">Modern Showdown — Abril</div><div class="t-meta">Sáb 12 Abr · 10:00 · Inscripción: €12</div></div><span class="t-badge badge-mtg">MTG</span><div class="t-players"><strong>28/32</strong>jugadores</div><div class="t-actions"><button class="t-action ta-purple" onclick="goPage('bracket',document.querySelector('[onclick*=bracket]'))">Bracket</button><button class="t-action ta-ghost" onclick="notify('Enlace copiado al portapapeles')">Compartir</button></div></div>
+        <div class="torneo-row"><div class="t-status" style="background:var(--amber)"></div><div class="t-info"><div class="t-name">EDH Commander Night</div><div class="t-meta">Sáb 12 Abr · 19:00 · Gratuito</div></div><span class="t-badge badge-mtg">MTG</span><div class="t-players"><strong>8/12</strong>jugadores</div><div class="t-actions"><button class="t-action ta-ghost" onclick="notify('Recordatorio enviado a 8 jugadores')">Recordatorio</button><button class="t-action ta-ghost" onclick="notify('Enlace copiado')">Compartir</button></div></div>
+        <div class="torneo-row"><div class="t-status" style="background:rgba(255,255,255,0.2)"></div><div class="t-info"><div class="t-name">Legacy Open — Abril</div><div class="t-meta">Dom 20 Abr · 11:00 · Inscripción: €20</div></div><span class="t-badge badge-mtg">MTG</span><div class="t-players"><strong>4/64</strong>jugadores</div><div class="t-actions"><button class="t-action ta-green" onclick="notify('Enlace promocional copiado')">Promocionar</button><button class="t-action ta-ghost" onclick="notify('Enlace copiado')">Compartir</button></div></div>
+      </div>
+      <div class="section-hdr"><h3>Últimas inscripciones</h3></div>
+      <div class="card">
+        <table class="players-table">
+          <thead><tr><th>Jugador</th><th>Torneo</th><th>Inscripción</th><th>Pago</th></tr></thead>
+          <tbody>
+            <tr><td><div class="p-cell"><div class="p-avatar" style="background:rgba(108,92,231,0.2);color:#a29bfe">CR</div><div><div class="p-name">Carlos Rueda</div><div class="p-sub">Madrid</div></div></div></td><td>Modern Showdown</td><td style="color:var(--muted)">Hace 12 min</td><td><span class="wr-pill wr-good">Pagado €12</span></td></tr>
+            <tr><td><div class="p-cell"><div class="p-avatar" style="background:rgba(0,184,148,0.15);color:#00b894">AF</div><div><div class="p-name">Ana Ferreira</div><div class="p-sub">Barcelona</div></div></div></td><td>Modern Showdown</td><td style="color:var(--muted)">Hace 1h</td><td><span class="wr-pill wr-good">Pagado €12</span></td></tr>
+            <tr><td><div class="p-cell"><div class="p-avatar" style="background:rgba(253,203,110,0.15);color:#fdcb6e">PG</div><div><div class="p-name">Pau Garcia</div><div class="p-sub">Barcelona</div></div></div></td><td>EDH Night</td><td style="color:var(--muted)">Hace 3h</td><td><span class="wr-pill wr-good">Gratis</span></td></tr>
+            <tr><td><div class="p-cell"><div class="p-avatar" style="background:rgba(225,112,85,0.15);color:#e17055">LB</div><div><div class="p-name">Luca Bianchi</div><div class="p-sub">Girona</div></div></div></td><td>Modern Showdown</td><td style="color:var(--muted)">Ayer</td><td><span class="wr-pill wr-mid">Pendiente</span></td></tr>
+          </tbody>
+        </table>
+      </div>
+    </div>
+
+    <div id="torneos" class="page">
+      <div class="section-hdr"><h3>Todos los torneos</h3><button class="tb-btn tb-btn-purple" onclick="goPage('nuevo',document.querySelector('[onclick*=nuevo]'))">+ Crear torneo</button></div>
+      <div class="card">
+        <div class="torneo-row"><div class="t-status" style="background:var(--green)"></div><div class="t-info"><div class="t-name">Modern Showdown — Abril</div><div class="t-meta">Sáb 12 Abr · 10:00 · Swiss 4 rondas · €12 entrada</div></div><span class="t-badge badge-mtg">MTG</span><div class="t-players"><strong>28/32</strong>jugadores</div><div class="t-actions"><button class="t-action ta-purple" onclick="goPage('bracket',document.querySelector('[onclick*=bracket]'))">Ver bracket</button><button class="t-action ta-ghost" onclick="notify('Editando torneo...')">Editar</button></div></div>
+        <div class="torneo-row"><div class="t-status" style="background:var(--amber)"></div><div class="t-info"><div class="t-name">EDH Commander Night</div><div class="t-meta">Sáb 12 Abr · 19:00 · Pods de 4 · Gratuito</div></div><span class="t-badge badge-mtg">MTG</span><div class="t-players"><strong>8/12</strong>jugadores</div><div class="t-actions"><button class="t-action ta-ghost" onclick="notify('Recordatorio enviado')">Recordatorio</button><button class="t-action ta-ghost" onclick="notify('Editando...')">Editar</button></div></div>
+        <div class="torneo-row"><div class="t-status" style="background:rgba(255,255,255,0.15)"></div><div class="t-info"><div class="t-name">Legacy Open — Abril</div><div class="t-meta">Dom 20 Abr · 11:00 · Swiss + Top 8 · €20 entrada</div></div><span class="t-badge badge-mtg">MTG</span><div class="t-players"><strong>4/64</strong>jugadores</div><div class="t-actions"><button class="t-action ta-green" onclick="notify('Enlace promocional copiado')">Promocionar</button><button class="t-action ta-ghost" onclick="notify('Editando...')">Editar</button></div></div>
+        <div class="torneo-row" style="opacity:0.5"><div class="t-status" style="background:var(--muted)"></div><div class="t-info"><div class="t-name">Modern Showdown — Marzo</div><div class="t-meta">Sáb 22 Mar · Finalizado · 32/32 jugadores</div></div><span class="t-badge badge-mtg">MTG</span><div class="t-players"><strong>32/32</strong>jugadores</div><div class="t-actions"><button class="t-action ta-ghost" onclick="notify('Viendo resultados')">Resultados</button></div></div>
+      </div>
+    </div>
+
+    <div id="nuevo" class="page">
+      <div class="card card-body">
+        <div class="form-grid">
+          <div class="form-group full"><div class="form-label">Nombre del torneo</div><input class="form-input" placeholder="Ej: Modern Showdown Mayo 2025" /></div>
+          <div class="form-group"><div class="form-label">Juego</div><select class="form-select"><option>Magic: The Gathering</option><option>Pokémon TCG</option><option>Yu-Gi-Oh!</option><option>One Piece TCG</option><option>Star Wars Unlimited</option><option>Disney Lorcana</option></select></div>
+          <div class="form-group"><div class="form-label">Formato</div><select class="form-select"><option>Modern</option><option>Pioneer</option><option>Standard</option><option>Legacy</option><option>EDH / Commander</option><option>Draft</option><option>Sealed</option><option>Pauper</option></select></div>
+          <div class="form-group"><div class="form-label">Fecha</div><input class="form-input" type="date" /></div>
+          <div class="form-group"><div class="form-label">Hora de inicio</div><input class="form-input" type="time" value="10:00" /></div>
+          <div class="form-group"><div class="form-label">Plazas máximas</div><input class="form-input" type="number" placeholder="32" /></div>
+          <div class="form-group"><div class="form-label">Precio de inscripción (€)</div><input class="form-input" type="number" placeholder="0 = gratuito" /></div>
+          <div class="form-group"><div class="form-label">Estructura</div><select class="form-select"><option>Swiss</option><option>Swiss + Top 8 eliminatoria</option><option>Eliminatoria directa</option><option>Round Robin</option><option>Pods (Commander)</option></select></div>
+          <div class="form-group"><div class="form-label">Número de rondas</div><input class="form-input" type="number" placeholder="4" /></div>
+          <div class="form-group full"><div class="form-label">Premio</div><input class="form-input" placeholder="Ej: €180 en crédito de tienda, boosters..." /></div>
+          <div class="form-group full"><div class="form-label">Descripción</div><textarea class="form-input" rows="3" placeholder="Reglas especiales, qué traer, información adicional..."></textarea></div>
+          <div class="form-group"><div class="form-label">Método de pago</div><select class="form-select"><option>En tienda el día del torneo</option><option>Bizum al confirmar</option><option>MB Way (Portugal)</option><option>Stripe (tarjeta online)</option></select></div>
+          <div class="form-group"><div class="form-label">Visibilidad</div><select class="form-select"><option>Público en Cardex</option><option>Solo con enlace</option><option>Privado</option></select></div>
+          <div class="form-group full" style="flex-direction:row;gap:12px;justify-content:flex-end;margin-top:4px">
+            <button class="tb-btn tb-btn-ghost" onclick="notify('Torneo guardado como borrador')">Guardar borrador</button>
+            <button class="tb-btn tb-btn-purple" onclick="notify('¡Torneo publicado! Ya aparece en Cardex.')">Publicar torneo</button>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <div id="jugadores" class="page">
+      <div class="section-hdr"><h3>Jugadores de tu tienda</h3><button class="tb-btn tb-btn-ghost" onclick="notify('Exportando a CSV...')">Exportar CSV</button></div>
+      <div class="card">
+        <table class="players-table">
+          <thead><tr><th>Jugador</th><th>Torneos</th><th>Win rate</th><th>ELO</th><th>Último torneo</th><th></th></tr></thead>
+          <tbody id="playersBody"></tbody>
+        </table>
+      </div>
+    </div>
+
+    <div id="metricas" class="page">
+      <div class="metrics-grid">
+        <div class="metric-card"><h3>Asistencia por día de la semana</h3><div class="day-row" id="dayBars"></div><div class="day-labels"><span class="day-label">Lun</span><span class="day-label">Mar</span><span class="day-label">Mié</span><span class="day-label">Jue</span><span class="day-label">Vie</span><span class="day-label">Sáb</span><span class="day-label">Dom</span></div></div>
+        <div class="metric-card"><h3>Juegos más populares</h3>
+          <div class="bar-row"><span class="bar-name">Magic: TG</span><div class="bar-track"><div class="bar-fill" style="width:72%;background:#a29bfe"></div></div><span class="bar-pct">72%</span></div>
+          <div class="bar-row"><span class="bar-name">Pokémon</span><div class="bar-track"><div class="bar-fill" style="width:48%;background:#fdcb6e"></div></div><span class="bar-pct">48%</span></div>
+          <div class="bar-row"><span class="bar-name">Yu-Gi-Oh!</span><div class="bar-track"><div class="bar-fill" style="width:31%;background:#00b894"></div></div><span class="bar-pct">31%</span></div>
+          <div class="bar-row"><span class="bar-name">One Piece</span><div class="bar-track"><div class="bar-fill" style="width:18%;background:#74b9ff"></div></div><span class="bar-pct">18%</span></div>
+        </div>
+        <div class="metric-card"><h3>Tasa de asistencia</h3>
+          <div style="font-size:28px;font-weight:700;font-family:'Syne',sans-serif;color:var(--green);margin-bottom:6px">94%</div>
+          <div style="font-size:11px;color:var(--muted);margin-bottom:12px">↑ 16 puntos vs sin Cardex</div>
+          <div class="bar-row"><span class="bar-name">Con Cardex</span><div class="bar-track"><div class="bar-fill" style="width:94%;background:var(--green)"></div></div><span class="bar-pct">94%</span></div>
+          <div class="bar-row"><span class="bar-name">Sin Cardex</span><div class="bar-track"><div class="bar-fill" style="width:78%;background:rgba(255,255,255,0.15)"></div></div><span class="bar-pct">78%</span></div>
+        </div>
+        <div class="metric-card"><h3>Ingresos por torneos</h3>
+          <div style="font-size:28px;font-weight:700;font-family:'Syne',sans-serif;color:var(--amber);margin-bottom:6px">€840</div>
+          <div style="font-size:11px;color:var(--muted);margin-bottom:12px">Este mes · ↑ 18% vs mes anterior</div>
+          <div class="bar-row"><span class="bar-name">Cobrado</span><div class="bar-track"><div class="bar-fill" style="width:75%;background:var(--amber)"></div></div><span class="bar-pct">€630</span></div>
+          <div class="bar-row"><span class="bar-name">Pendiente</span><div class="bar-track"><div class="bar-fill" style="width:25%;background:rgba(253,203,110,0.3)"></div></div><span class="bar-pct">€210</span></div>
+        </div>
+      </div>
+    </div>
+
+    <div id="bracket" class="page">
+      <div class="section-hdr"><h3>Modern Showdown — Ronda 3 de 4</h3><div style="display:flex;gap:8px"><button class="tb-btn tb-btn-ghost" onclick="notify('Resultados enviados a todos los jugadores')">Notificar jugadores</button><button class="tb-btn tb-btn-purple" onclick="notify('Ronda 4 iniciada. Mesas asignadas.')">Iniciar ronda 4</button></div></div>
+      <div class="card card-body"><div class="bracket-wrap"><div class="bracket" id="bracketEl"></div></div></div>
+      <div class="section-hdr" style="margin-top:16px"><h3>Clasificación actual</h3></div>
+      <div class="card"><table class="players-table"><thead><tr><th>#</th><th>Jugador</th><th>Puntos</th><th>W/L</th><th>Opp. WR</th></tr></thead><tbody id="standingsBody"></tbody></table></div>
+    </div>
+
+  </div>
+</div>
+<div class="notif" id="notif"></div>
+<script>
+function goPage(id,el){
+  document.querySelectorAll('.page').forEach(p=>p.classList.remove('on'));
+  document.querySelectorAll('.nav-item').forEach(n=>n.classList.remove('on'));
+  document.getElementById(id).classList.add('on');
+  if(el)el.classList.add('on');
+  const titles={dashboard:'Dashboard',torneos:'Mis torneos',nuevo:'Nuevo torneo',jugadores:'Jugadores',metricas:'Métricas',bracket:'Bracket en vivo'};
+  document.getElementById('topbar-title').textContent=titles[id]||id;
+  if(id==='metricas')buildDayBars();
+  if(id==='jugadores')buildPlayers();
+  if(id==='bracket')buildBracket();
+}
+let notifTimer;
+function notify(msg){
+  const el=document.getElementById('notif');
+  el.textContent=msg;el.classList.add('show');
+  clearTimeout(notifTimer);
+  notifTimer=setTimeout(()=>el.classList.remove('show'),3000);
+}
+function buildDayBars(){
+  const vals=[8,12,6,10,22,84,31];
+  const max=Math.max(...vals);
+  document.getElementById('dayBars').innerHTML=vals.map((v,i)=>`<div class="day-bar" style="height:${Math.round(v/max*100)}%;background:${i===5?'var(--purple)':'rgba(108,92,231,0.3)'}"></div>`).join('');
+}
+const players=[
+  {ini:'CR',bg:'rgba(108,92,231,0.2)',fc:'#a29bfe',name:'Carlos Rueda',loc:'Madrid',t:42,wr:79,elo:2104},
+  {ini:'AF',bg:'rgba(0,184,148,0.15)',fc:'#00b894',name:'Ana Ferreira',loc:'Barcelona',t:38,wr:74,elo:2088},
+  {ini:'JL',bg:'rgba(116,185,255,0.15)',fc:'#74b9ff',name:'Joan López',loc:'Barcelona',t:31,wr:64,elo:1847},
+  {ini:'PG',bg:'rgba(253,203,110,0.15)',fc:'#fdcb6e',name:'Pau Garcia',loc:'Barcelona',t:24,wr:58,elo:1720},
+  {ini:'MR',bg:'rgba(225,112,85,0.15)',fc:'#e17055',name:'Marc Ribas',loc:'Sabadell',t:19,wr:51,elo:1640},
+];
+function buildPlayers(){
+  document.getElementById('playersBody').innerHTML=players.map(p=>`
+    <tr><td><div class="p-cell"><div class="p-avatar" style="background:${p.bg};color:${p.fc}">${p.ini}</div><div><div class="p-name">${p.name}</div><div class="p-sub">${p.loc}</div></div></div></td>
+    <td>${p.t}</td><td><span class="wr-pill ${p.wr>=65?'wr-good':p.wr>=52?'wr-mid':'wr-bad'}">${p.wr}%</span></td>
+    <td><span class="elo-num">${p.elo}</span></td><td style="color:var(--muted)">Hace 2 días</td>
+    <td><button class="t-action ta-ghost" onclick="notify('Viendo perfil de ${p.name}')">Ver perfil</button></td></tr>`).join('');
+}
+const rounds=[
+  {title:'Ronda 1',matches:[[{name:'C. Rueda',score:2,win:true},{name:'M. Ribas',score:0}],[{name:'A. Ferreira',score:2,win:true},{name:'L. Bosch',score:1}],[{name:'J. López',score:2,win:true},{name:'P. Garcia',score:0}],[{name:'X. Tort',score:2,win:true},{name:'R. Mas',score:1}]]},
+  {title:'Ronda 2',matches:[[{name:'C. Rueda',score:2,win:true},{name:'A. Ferreira',score:1}],[{name:'J. López',score:1},{name:'X. Tort',score:2,win:true}],[{name:'M. Ribas',score:2,win:true},{name:'P. Garcia',score:0}],[{name:'L. Bosch',score:2,win:true},{name:'R. Mas',score:0}]]},
+  {title:'Ronda 3 (live)',matches:[[{name:'C. Rueda',score:1,win:true},{name:'X. Tort',score:0}],[{name:'J. López',score:'?'},{name:'M. Ribas',score:'?'}],[{name:'A. Ferreira',score:'?'},{name:'L. Bosch',score:'?'}],[{name:'P. Garcia',score:'?'},{name:'R. Mas',score:'?'}]]},
+];
+function buildBracket(){
+  document.getElementById('bracketEl').innerHTML=rounds.map(r=>`<div class="bracket-round"><div class="br-title">${r.title}</div><div class="br-matches">${r.matches.map(m=>`<div class="br-match"><div class="br-player ${m[0].win?'winner':''}"><span class="bp-name">${m[0].name}</span><span class="bp-score">${m[0].score}</span></div><div class="br-player ${m[1].win?'winner':''}"><span class="bp-name">${m[1].name}</span><span class="bp-score">${m[1].score}</span></div></div>`).join('')}</div></div>`).join('');
+  const standings=[{rank:1,ini:'CR',fc:'#a29bfe',name:'C. Rueda',pts:9,w:3,l:0,owr:'68%'},{rank:2,ini:'XT',fc:'#00b894',name:'X. Tort',pts:6,w:2,l:1,owr:'61%'},{rank:3,ini:'LB',fc:'#fdcb6e',name:'L. Bosch',pts:6,w:2,l:1,owr:'58%'},{rank:4,ini:'MR',fc:'#e17055',name:'M. Ribas',pts:3,w:1,l:2,owr:'55%'},{rank:5,ini:'AF',fc:'#a29bfe',name:'A. Ferreira',pts:3,w:1,l:2,owr:'52%'}];
+  document.getElementById('standingsBody').innerHTML=standings.map(s=>`<tr><td style="color:var(--muted);font-family:'Syne',sans-serif;font-weight:600">${s.rank}</td><td><div class="p-cell"><div class="p-avatar" style="background:rgba(255,255,255,0.05);color:${s.fc};width:24px;height:24px;font-size:10px">${s.ini}</div>${s.name}</div></td><td><span style="font-family:'Syne',sans-serif;font-weight:700;color:var(--purple-light)">${s.pts} pts</span></td><td style="color:var(--muted)">${s.w}/${s.l}</td><td style="color:var(--muted)">${s.owr}</td></tr>`).join('');
+}
+</script>
+</body>
+</html>

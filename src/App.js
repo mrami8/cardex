@@ -5,6 +5,9 @@ import Torneos from './pages/Torneos';
 import NuevoTorneo from './pages/NuevoTorneo';
 import Jugadores from './pages/Jugadores';
 import Decklists from './pages/Decklists';
+import Mesas from './pages/Mesas';
+import Bracket from './pages/Bracket';
+import IAMazos from './pages/IAMazos';
 
 function App() {
   return (
@@ -16,6 +19,10 @@ function App() {
         <Route path="/nuevo-torneo" element={<NuevoTorneo />} />
         <Route path="/jugadores" element={<Jugadores />} />
         <Route path="/decklists" element={<Decklists />} />
+        <Route path="/mesas" element={<Mesas />} />
+        <Route path="/bracket" element={<Bracket />} />
+        <Route path="/ia-mazos" element={<IAMazos />} />     
+                
       </Routes>
     </BrowserRouter>
   );

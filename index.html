@@ -1,0 +1,231 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Cardex — La plataforma de torneos TCG de España y Portugal</title>
+<link href="https://fonts.googleapis.com/css2?family=Syne:wght@400;500;600;700;800&family=DM+Sans:wght@300;400;500&display=swap" rel="stylesheet">
+<style>
+:root{--black:#0a0a0f;--white:#f5f4f0;--purple:#6c5ce7;--purple-light:#a29bfe;--green:#00b894;--amber:#fdcb6e;--surface:#13121a;--surface2:#1e1c2a;--border:rgba(255,255,255,0.07);--muted:rgba(245,244,240,0.45)}
+*{box-sizing:border-box;margin:0;padding:0}
+html{scroll-behavior:smooth}
+body{background:var(--black);color:var(--white);font-family:'DM Sans',sans-serif;font-size:15px;line-height:1.6;overflow-x:hidden}
+h1,h2,h3{font-family:'Syne',sans-serif}
+nav{position:sticky;top:0;z-index:100;display:flex;align-items:center;justify-content:space-between;padding:14px 20px;border-bottom:0.5px solid var(--border);background:rgba(10,10,15,0.92);backdrop-filter:blur(12px)}
+.logo{display:flex;align-items:center;gap:8px}
+.logo-mark{width:30px;height:30px;background:var(--purple);border-radius:7px;display:flex;align-items:center;justify-content:center;font-family:'Syne',sans-serif;font-weight:800;font-size:14px;color:white;flex-shrink:0}
+.logo-text{font-size:17px;font-weight:700;letter-spacing:-0.5px;font-family:'Syne',sans-serif}
+.nav-links{display:flex;gap:4px}
+.nav-link{padding:6px 12px;font-size:13px;color:var(--muted);border-radius:8px;text-decoration:none}
+.nav-cta{padding:8px 16px;background:var(--purple);color:white;border:none;border-radius:8px;font-size:13px;font-family:'DM Sans',sans-serif;font-weight:500;cursor:pointer;text-decoration:none;white-space:nowrap}
+@media(max-width:600px){.nav-links{display:none}}
+.hero{min-height:88vh;display:flex;flex-direction:column;align-items:center;justify-content:center;text-align:center;padding:60px 20px 40px;position:relative;overflow:hidden}
+.hero-glow{position:absolute;top:-20%;left:50%;transform:translateX(-50%);width:500px;height:500px;background:radial-gradient(circle,rgba(108,92,231,0.18) 0%,transparent 70%);border-radius:50%;pointer-events:none}
+.hero-grid{position:absolute;inset:0;background-image:linear-gradient(rgba(255,255,255,0.03) 1px,transparent 1px),linear-gradient(90deg,rgba(255,255,255,0.03) 1px,transparent 1px);background-size:50px 50px;mask-image:radial-gradient(ellipse at center,black 20%,transparent 75%);pointer-events:none}
+.hero-badge{display:inline-flex;align-items:center;gap:8px;background:rgba(108,92,231,0.15);border:0.5px solid rgba(108,92,231,0.4);border-radius:20px;padding:6px 14px;font-size:12px;color:var(--purple-light);margin-bottom:24px;font-family:'Syne',sans-serif;font-weight:600;letter-spacing:0.5px}
+.hero-dot{width:6px;height:6px;border-radius:50%;background:var(--green);animation:pulse 2s infinite;flex-shrink:0}
+@keyframes pulse{0%,100%{opacity:1}50%{opacity:0.4}}
+h1{font-size:clamp(34px,8vw,68px);font-weight:800;line-height:1.06;letter-spacing:-2px;margin-bottom:20px;max-width:720px}
+h1 em{font-style:normal;color:var(--purple-light)}
+.hero-sub{font-size:clamp(15px,4vw,17px);color:var(--muted);max-width:480px;margin:0 auto 36px;font-weight:300;line-height:1.7}
+.hero-ctas{display:flex;gap:10px;justify-content:center;flex-wrap:wrap;margin-bottom:40px}
+.btn{padding:13px 24px;border-radius:10px;font-size:15px;font-weight:500;cursor:pointer;font-family:'DM Sans',sans-serif;transition:all 0.2s;border:none;text-decoration:none;display:inline-block;text-align:center}
+.btn-primary{background:var(--purple);color:white}
+.btn-ghost{background:rgba(255,255,255,0.06);color:var(--white);border:0.5px solid var(--border)}
+.hero-proof{display:flex;align-items:center;gap:14px;color:var(--muted);font-size:12px;flex-wrap:wrap;justify-content:center}
+.proof-div{width:1px;height:14px;background:var(--border)}
+.hero-proof strong{color:var(--white)}
+@media(max-width:480px){.proof-div{display:none}.hero-proof{flex-direction:column;gap:6px}}
+.preview{padding:0 20px 60px;display:flex;justify-content:center}
+.preview-frame{background:var(--surface);border:0.5px solid var(--border);border-radius:14px;padding:16px;width:100%;max-width:800px}
+.preview-bar{display:flex;align-items:center;gap:6px;margin-bottom:14px}
+.pdot{width:9px;height:9px;border-radius:50%}
+.preview-label{font-size:11px;color:var(--muted);margin-left:auto;font-family:'Syne',sans-serif}
+.ep-grid{display:grid;gap:8px;grid-template-columns:repeat(3,1fr)}
+@media(max-width:560px){.ep-grid{grid-template-columns:1fr}}
+.ep-card{background:var(--surface2);border:0.5px solid var(--border);border-radius:9px;padding:11px}
+.ep-badge{font-size:10px;padding:2px 7px;border-radius:7px;display:inline-block;margin-bottom:7px;font-family:'Syne',sans-serif;font-weight:600}
+.b-mtg{background:rgba(108,92,231,0.2);color:#a29bfe}
+.b-pk{background:rgba(253,203,110,0.15);color:#fdcb6e}
+.b-ygo{background:rgba(0,184,148,0.15);color:#00b894}
+.ep-name{font-size:12px;font-weight:500;margin-bottom:5px;font-family:'Syne',sans-serif}
+.ep-meta{font-size:11px;color:var(--muted);line-height:1.6}
+.ep-bar{height:3px;background:rgba(255,255,255,0.08);border-radius:2px;margin-top:8px;overflow:hidden}
+.ep-fill{height:100%;border-radius:2px}
+.section{padding:60px 20px}
+.section-label{font-size:11px;font-family:'Syne',sans-serif;font-weight:700;letter-spacing:2px;color:var(--purple-light);margin-bottom:14px;text-transform:uppercase}
+.section-title{font-size:clamp(26px,6vw,42px);font-weight:800;letter-spacing:-1px;line-height:1.1;margin-bottom:14px}
+.section-sub{font-size:15px;color:var(--muted);font-weight:300;line-height:1.7}
+.prob-grid{display:grid;grid-template-columns:1fr 1fr;gap:10px;margin-top:32px}
+@media(max-width:540px){.prob-grid{grid-template-columns:1fr}}
+.prob-card{background:var(--surface);border:0.5px solid var(--border);border-radius:12px;padding:16px;display:flex;gap:12px;align-items:flex-start}
+.prob-icon{width:34px;height:34px;border-radius:8px;display:flex;align-items:center;justify-content:center;font-size:15px;flex-shrink:0}
+.prob-title{font-size:13px;font-weight:500;margin-bottom:3px;font-family:'Syne',sans-serif}
+.prob-desc{font-size:12px;color:var(--muted);line-height:1.6}
+.for-stores{padding:60px 20px;background:var(--surface);border-top:0.5px solid var(--border);border-bottom:0.5px solid var(--border)}
+.two-col{display:grid;grid-template-columns:1fr 1fr;gap:40px;align-items:center;max-width:900px;margin:0 auto}
+@media(max-width:720px){.two-col{grid-template-columns:1fr}}
+.feat-list{display:flex;flex-direction:column;gap:14px;margin-top:24px}
+.feat{display:flex;gap:12px;align-items:flex-start}
+.feat-dot{width:7px;height:7px;border-radius:50%;background:var(--purple);margin-top:7px;flex-shrink:0}
+.feat-title{font-size:13px;font-weight:500;margin-bottom:2px;font-family:'Syne',sans-serif}
+.feat-desc{font-size:12px;color:var(--muted)}
+.store-mock{background:var(--black);border:0.5px solid var(--border);border-radius:12px;padding:16px;margin-top:24px}
+.mock-hdr{display:flex;align-items:center;justify-content:space-between;margin-bottom:12px}
+.mock-title{font-size:12px;font-weight:600;font-family:'Syne',sans-serif}
+.mock-live{font-size:10px;padding:2px 8px;background:rgba(0,184,148,0.15);color:#00b894;border-radius:7px;font-family:'Syne',sans-serif;font-weight:600}
+.mock-stats{display:grid;grid-template-columns:repeat(3,1fr);gap:6px;margin-bottom:10px}
+.mstat{background:var(--surface2);border-radius:7px;padding:9px;text-align:center}
+.mstat-num{font-size:16px;font-weight:700;font-family:'Syne',sans-serif}
+.mstat-label{font-size:9px;color:var(--muted);margin-top:1px}
+.mock-row{display:flex;align-items:center;gap:8px;padding:7px 0;border-bottom:0.5px solid var(--border);font-size:11px}
+.mock-row:last-child{border:none}
+.mock-dot{width:6px;height:6px;border-radius:50%;flex-shrink:0}
+.for-players{padding:60px 20px}
+.pf-grid{display:grid;grid-template-columns:repeat(3,1fr);gap:12px;margin-top:32px}
+@media(max-width:680px){.pf-grid{grid-template-columns:1fr 1fr}}
+@media(max-width:420px){.pf-grid{grid-template-columns:1fr}}
+.pf-card{background:var(--surface);border:0.5px solid var(--border);border-radius:12px;padding:16px}
+.pf-icon{width:36px;height:36px;border-radius:9px;margin-bottom:12px;display:flex;align-items:center;justify-content:center;font-size:16px}
+.pf-title{font-size:13px;font-weight:600;margin-bottom:5px;font-family:'Syne',sans-serif}
+.pf-desc{font-size:12px;color:var(--muted);line-height:1.6}
+.panel-cta{background:var(--surface);border-top:0.5px solid var(--border);border-bottom:0.5px solid var(--border);padding:40px 20px;text-align:center}
+.panel-cta p{font-size:14px;color:var(--muted);margin-bottom:16px}
+.cta-final{padding:80px 20px;text-align:center}
+.cta-final h2{font-size:clamp(28px,7vw,52px);font-weight:800;letter-spacing:-1.5px;margin-bottom:14px;line-height:1.1}
+.cta-final p{font-size:15px;color:var(--muted);margin-bottom:32px;font-weight:300;line-height:1.7}
+.cta-form{display:flex;gap:8px;max-width:420px;margin:0 auto;flex-wrap:wrap}
+.cta-input{flex:1;min-width:180px;padding:13px 16px;background:var(--surface);border:0.5px solid var(--border);border-radius:10px;color:var(--white);font-size:14px;font-family:'DM Sans',sans-serif;outline:none}
+.cta-input:focus{border-color:var(--purple)}
+.cta-input::placeholder{color:var(--muted)}
+.cta-submit{padding:13px 20px;background:var(--purple);color:white;border:none;border-radius:10px;font-size:14px;font-weight:500;cursor:pointer;font-family:'DM Sans',sans-serif;white-space:nowrap;width:100%}
+@media(min-width:480px){.cta-submit{width:auto}}
+.cta-note{font-size:12px;color:var(--muted);margin-top:10px}
+footer{padding:24px 20px;border-top:0.5px solid var(--border);display:flex;align-items:center;justify-content:space-between;flex-wrap:wrap;gap:12px}
+.footer-copy{font-size:12px;color:var(--muted)}
+.footer-links{display:flex;gap:16px}
+.footer-link{font-size:12px;color:var(--muted);text-decoration:none}
+@keyframes fadeUp{from{opacity:0;transform:translateY(20px)}to{opacity:1;transform:translateY(0)}}
+.hero>*{animation:fadeUp 0.5s ease both}
+.hero-badge{animation-delay:0.05s}
+h1{animation-delay:0.12s}
+.hero-sub{animation-delay:0.2s}
+.hero-ctas{animation-delay:0.28s}
+.hero-proof{animation-delay:0.36s}
+</style>
+</head>
+<body>
+<nav>
+  <div class="logo"><div class="logo-mark">C</div><div class="logo-text">Cardex</div></div>
+  <div class="nav-links"><a class="nav-link" href="#tiendas">Para tiendas</a><a class="nav-link" href="#jugadores">Para jugadores</a></div>
+  <a class="nav-cta" href="#cta">Únete al piloto</a>
+</nav>
+<section class="hero">
+  <div class="hero-glow"></div><div class="hero-grid"></div>
+  <div class="hero-badge"><span class="hero-dot"></span>Piloto cerrado · España &amp; Portugal</div>
+  <h1>La plataforma TCG que <em>Europa merecía</em></h1>
+  <p class="hero-sub">Gestiona torneos, encuentra eventos cerca y compite con jugadores de toda Iberia. En español. Desde el primer día.</p>
+  <div class="hero-ctas">
+    <a class="btn btn-primary" href="#cta">Quiero el acceso piloto</a>
+    <a class="btn btn-ghost" href="#tiendas">Soy organizador →</a>
+  </div>
+  <div class="hero-proof">
+    <span><strong>100%</strong> en español</span><div class="proof-div"></div>
+    <span>Piloto gratuito</span><div class="proof-div"></div>
+    <span>España &amp; Portugal</span>
+  </div>
+</section>
+<div class="preview">
+  <div class="preview-frame">
+    <div class="preview-bar">
+      <div class="pdot" style="background:#ff5f57"></div><div class="pdot" style="background:#ffbd2e"></div><div class="pdot" style="background:#28c840"></div>
+      <div class="preview-label">cardex.gg — eventos esta semana</div>
+    </div>
+    <div class="ep-grid">
+      <div class="ep-card"><span class="ep-badge b-mtg">Magic: TG</span><div class="ep-name">Modern Showdown BCN</div><div class="ep-meta">Sáb 12 Abr · 10:00<br>Card Castle · 28/32</div><div class="ep-bar"><div class="ep-fill" style="width:87%;background:#6c5ce7"></div></div></div>
+      <div class="ep-card"><span class="ep-badge b-pk">Pokémon</span><div class="ep-name">Spring Regional</div><div class="ep-meta">Sáb 12 Abr · 09:00<br>GameZone Madrid · 64/128</div><div class="ep-bar"><div class="ep-fill" style="width:50%;background:#fdcb6e"></div></div></div>
+      <div class="ep-card"><span class="ep-badge b-ygo">Yu-Gi-Oh!</span><div class="ep-name">Advanced Weekly</div><div class="ep-meta">Dom 13 Abr · 12:00<br>La Guarida · 12/32</div><div class="ep-bar"><div class="ep-fill" style="width:37%;background:#00b894"></div></div></div>
+    </div>
+  </div>
+</div>
+<section class="section" id="problema">
+  <div class="section-label">El problema</div>
+  <div class="section-title">Organizar torneos en España sigue siendo un caos</div>
+  <div class="section-sub">Las herramientas que existen son para el mercado anglosajón.</div>
+  <div class="prob-grid">
+    <div class="prob-card"><div class="prob-icon" style="background:rgba(231,76,60,0.15)">📋</div><div><div class="prob-title">Inscripciones por WhatsApp</div><div class="prob-desc">Sin confirmaciones, sin cobro automático.</div></div></div>
+    <div class="prob-card"><div class="prob-icon" style="background:rgba(241,196,15,0.15)">🌐</div><div><div class="prob-title">Solo en inglés</div><div class="prob-desc">TopDeck, Challonge. Ninguna piensa en España.</div></div></div>
+    <div class="prob-card"><div class="prob-icon" style="background:rgba(108,92,231,0.15)">📊</div><div><div class="prob-title">Sin rankings locales</div><div class="prob-desc">No hay ELO fiable ni historial de partidas.</div></div></div>
+    <div class="prob-card"><div class="prob-icon" style="background:rgba(0,184,148,0.15)">📍</div><div><div class="prob-title">Torneos invisibles</div><div class="prob-desc">La info está dispersa en Facebook y Discord.</div></div></div>
+  </div>
+</section>
+<section class="for-stores" id="tiendas">
+  <div class="two-col">
+    <div>
+      <div class="section-label">Para tiendas y organizadores</div>
+      <div class="section-title" style="font-size:clamp(22px,5vw,36px)">Tu torneo, gestionado en minutos</div>
+      <div class="feat-list">
+        <div class="feat"><div class="feat-dot"></div><div><div class="feat-title">Inscripciones con cobro integrado</div><div class="feat-desc">Stripe, Bizum y MB Way. El dinero llega solo.</div></div></div>
+        <div class="feat"><div class="feat-dot"></div><div><div class="feat-title">Brackets y rondas automáticos</div><div class="feat-desc">Swiss, eliminatoria, Round Robin. Los jugadores ven su mesa en el móvil.</div></div></div>
+        <div class="feat"><div class="feat-dot"></div><div><div class="feat-title">Tu tienda en el mapa de Cardex</div><div class="feat-desc">Jugadores de toda España descubren tus eventos.</div></div></div>
+        <div class="feat"><div class="feat-dot"></div><div><div class="feat-title">Dashboard con métricas</div><div class="feat-desc">Asistencia, juegos más populares, ingresos.</div></div></div>
+        <div class="feat"><div class="feat-dot"></div><div><div class="feat-title">Soporte en español, siempre</div><div class="feat-desc">Una persona real que entiende el mundo TCG.</div></div></div>
+      </div>
+      <div style="margin-top:24px"><a class="btn btn-primary" href="panel.html">Ver el panel de gestión →</a></div>
+    </div>
+    <div class="store-mock">
+      <div class="mock-hdr"><span class="mock-title">Panel — Card Castle BCN</span><span class="mock-live">Live</span></div>
+      <div class="mock-stats">
+        <div class="mstat"><div class="mstat-num" style="color:#a29bfe">12</div><div class="mstat-label">Torneos</div></div>
+        <div class="mstat"><div class="mstat-num" style="color:#00b894">284</div><div class="mstat-label">Jugadores</div></div>
+        <div class="mstat"><div class="mstat-num" style="color:#fdcb6e">€840</div><div class="mstat-label">Ingresos</div></div>
+      </div>
+      <div class="mock-row"><div class="mock-dot" style="background:#00b894"></div><span style="flex:1">Modern Showdown — Sáb 12</span><span style="color:#a29bfe;font-size:10px">28/32</span></div>
+      <div class="mock-row"><div class="mock-dot" style="background:#fdcb6e"></div><span style="flex:1">EDH Night — Sáb 12</span><span style="color:#fdcb6e;font-size:10px">8/12</span></div>
+      <div class="mock-row"><div class="mock-dot" style="background:rgba(255,255,255,0.2)"></div><span style="flex:1">Legacy Open — Dom 20</span><span style="color:var(--muted);font-size:10px">4/64</span></div>
+    </div>
+  </div>
+</section>
+<section class="for-players" id="jugadores">
+  <div class="section-label">Para jugadores</div>
+  <div class="section-title">Encuentra tu torneo.<br>Compite. Sube en el ranking.</div>
+  <div class="pf-grid">
+    <div class="pf-card"><div class="pf-icon" style="background:rgba(108,92,231,0.15)">🗺️</div><div class="pf-title">Torneos cerca de ti</div><div class="pf-desc">Por juego, formato y distancia. Toda España en un lugar.</div></div>
+    <div class="pf-card"><div class="pf-icon" style="background:rgba(0,184,148,0.15)">📈</div><div class="pf-title">Tu ranking ELO</div><div class="pf-desc">Historial, win rate por mazo y posición local.</div></div>
+    <div class="pf-card"><div class="pf-icon" style="background:rgba(253,203,110,0.15)">⚡</div><div class="pf-title">Inscríbete en segundos</div><div class="pf-desc">Un clic, pago integrado, confirmación automática.</div></div>
+    <div class="pf-card"><div class="pf-icon" style="background:rgba(231,76,60,0.15)">🏆</div><div class="pf-title">Meta reports</div><div class="pf-desc">Qué mazos ganan en España. Datos reales.</div></div>
+    <div class="pf-card"><div class="pf-icon" style="background:rgba(108,92,231,0.15)">📱</div><div class="pf-title">App móvil</div><div class="pf-desc">iOS y Android. Rondas en tiempo real.</div></div>
+    <div class="pf-card"><div class="pf-icon" style="background:rgba(0,184,148,0.15)">🤝</div><div class="pf-title">Comunidad local</div><div class="pf-desc">Chat por ciudad y por juego.</div></div>
+  </div>
+</section>
+<div class="panel-cta">
+  <p>¿Quieres ver cómo funciona el panel de gestión para tiendas?</p>
+  <a class="btn btn-ghost" href="panel.html">Ver demo del panel →</a>
+</div>
+<section class="cta-final" id="cta">
+  <h2>¿Organizas torneos?<br>Únete al piloto.</h2>
+  <p>Las primeras 20 tiendas tienen acceso gratuito.<br>Sin tarjeta. Sin compromiso.</p>
+  <div class="cta-form">
+    <input class="cta-input" type="email" placeholder="tu@tienda.es" id="emailInput" />
+    <button class="cta-submit" onclick="submitEmail()">Quiero acceso</button>
+  </div>
+  <div class="cta-note" id="cta-note">Te contactamos en menos de 24h con tu acceso al piloto.</div>
+</section>
+<footer>
+  <div style="display:flex;align-items:center;gap:8px">
+    <div class="logo-mark" style="width:22px;height:22px;font-size:10px">C</div>
+    <span class="footer-copy">© 2025 Cardex · España &amp; Portugal</span>
+  </div>
+  <div class="footer-links"><span class="footer-link">Privacidad</span><span class="footer-link">Contacto</span></div>
+</footer>
+<script>
+function submitEmail(){
+  const v=document.getElementById('emailInput').value;
+  if(!v||!v.includes('@')){document.getElementById('cta-note').textContent='Introduce un email válido.';return;}
+  document.getElementById('cta-note').textContent='✓ Perfecto, '+v+' — te escribimos en menos de 24h.';
+  document.getElementById('cta-note').style.color='#00b894';
+  document.getElementById('emailInput').value='';
+}
+</script>
+</body>
+</html>

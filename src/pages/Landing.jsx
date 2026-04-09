@@ -17,8 +17,9 @@ export default function Landing() {
           <button onClick={()=>navigate('/decklists')} style={{padding:'7px 14px',background:'transparent',color:'rgba(245,244,240,0.45)',border:'none',borderRadius:8,cursor:'pointer',fontSize:13}}>Decklists</button>
           <button onClick={()=>navigate('/jugadores')} style={{padding:'7px 14px',background:'transparent',color:'rgba(245,244,240,0.45)',border:'none',borderRadius:8,cursor:'pointer',fontSize:13}}>Jugadores</button>
           <button onClick={()=>navigate('/panel')} style={{padding:'7px 16px',background:'#6c5ce7',color:'white',border:'none',borderRadius:8,cursor:'pointer',fontSize:13,fontWeight:500}}>Panel tienda</button>
+          <button onClick={()=>navigate('/login')} style={{padding:'7px 14px',background:'transparent',color:'rgba(245,244,240,0.45)',border:'0.5px solid rgba(255,255,255,0.07)',borderRadius:8,cursor:'pointer',fontSize:13}}>Iniciar sesión</button>
           <button onClick={()=>navigate('/ia-mazos')} style={{padding:'7px 14px',background:'transparent',color:'rgba(245,244,240,0.45)',border:'none',borderRadius:8,cursor:'pointer',fontSize:13}}>IA Mazos ✦</button>
-        </div>
+          </div>
       </nav>
 
       {/* HERO */}

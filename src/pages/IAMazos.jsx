@@ -41,7 +41,7 @@ Nivel competitivo objetivo: ${nivel}
 
 DECKLIST:
 ${decklist}
-
+IMPORTANTE: Todas las cartas sugeridas deben ser 100% legales en el formato ${formato}. Consulta la lista de ban oficial antes de sugerir cualquier carta. En EDH/Commander están baneadas cartas como Griselbrand, Emrakul, Primeval Titan, entre otras. No sugieras NUNCA una carta baneada.
 Responde ÚNICAMENTE en este formato JSON exacto, sin texto adicional:
 {
   "resumen": "2-3 frases describiendo el mazo y su estrategia principal",

@@ -14,6 +14,8 @@ import Rankings from './pages/Rankings';
 import PerfilTienda from './pages/PerfilTienda';
 import Login from './pages/Login';
 import Premium from './pages/Premium';
+import Metricas from './pages/Metricas';
+
 
 function App() {
   return (
@@ -35,6 +37,8 @@ function App() {
         <Route path="/login" element={<Login />} />
         <Route path="/registro" element={<Login />} />
         <Route path="/premium" element={<Premium />} />
+        <Route path="/metricas" element={<Metricas />} />
+        
                  
       </Routes>
     </BrowserRouter>

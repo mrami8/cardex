@@ -42,7 +42,7 @@ export default function Torneos() {
               <div key={t.id} style={{display:'flex',alignItems:'center',gap:12,padding:'14px 16px',borderBottom:i<filtrados.length-1?'0.5px solid rgba(255,255,255,0.07)':'none',opacity:t.status==='finalizado'?0.5:1}}>
                 <div style={{width:8,height:8,borderRadius:'50%',background:t.color,flexShrink:0}}></div>
                 <div style={{flex:1}}>
-                  <div style={{fontSize:13,fontWeight:500,marginBottom:2}}>{t.name}</div>
+                  <div style={{fontSize:13,fontWeight:500,marginBottom:2,cursor:'pointer',color:'white'}} onClick={()=>navigate('/torneos')}>{t.name}</div>
                   <div style={{fontSize:11,color:'rgba(245,244,240,0.45)',marginBottom:6}}>{t.meta}</div>
                   <div style={{display:'flex',alignItems:'center',gap:8}}>
                     <div style={{flex:1,height:3,background:'rgba(255,255,255,0.08)',borderRadius:2,overflow:'hidden',maxWidth:120}}>
@@ -54,13 +54,13 @@ export default function Torneos() {
                 <span style={{fontSize:10,padding:'2px 8px',background:'rgba(108,92,231,0.2)',color:'#a29bfe',borderRadius:8,fontWeight:600}}>{t.badge}</span>
                 <div style={{display:'flex',gap:6}}>
                   <button onClick={()=>navigate('/nuevo-torneo')} style={{padding:'5px 10px',background:'rgba(255,255,255,0.06)',color:'white',border:'none',borderRadius:6,fontSize:11,cursor:'pointer'}}>Editar</button>
-                  {t.status!=='finalizado' && <button style={{padding:'5px 10px',background:'rgba(108,92,231,0.2)',color:'#a29bfe',border:'none',borderRadius:6,fontSize:11,cursor:'pointer'}}>Bracket</button>}
+                    {t.status!=='finalizado' && <button onClick={()=>navigate('/bracket')} style={{padding:'5px 10px',background:'rgba(108,92,231,0.2)',color:'#a29bfe',border:'none',borderRadius:6,fontSize:11,cursor:'pointer'}}>Bracket</button>}
                 </div>
               </div>
             );
           })}
+          </div>
         </div>
-      </div>
     </div>
   );
 }

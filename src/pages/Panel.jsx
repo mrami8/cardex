@@ -22,8 +22,11 @@ export default function Panel() {
           {label:'Jugadores',path:'/jugadores'},
           {label:'Decklists',path:'/decklists'},
           {label:'Distribución mesas',path:'/mesas'},
-          {label:'Bracket eliminatorio',path:'/bracket'},
-          {label:'IA para mazos ✦',path:'/ia-mazos'}
+          {label:'Bracket',path:'/bracket'},
+          {label:'IA para mazos ✦',path:'/ia-mazos'},
+          {label:'Métricas',path:'/metricas'},
+          {label:'Mi tienda',path:'/tienda/1'},
+          {label:'Premium',path:'/premium'},
         ].map((item,i)=>(
           <div key={i} onClick={()=>navigate(item.path)} style={{padding:'9px 16px',cursor:'pointer',color:'rgba(245,244,240,0.45)',fontSize:13,margin:'1px 6px',borderRadius:7,transition:'all 0.15s'}}
             onMouseEnter={e=>e.target.style.background='rgba(255,255,255,0.05)'}

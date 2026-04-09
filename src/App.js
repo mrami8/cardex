@@ -15,6 +15,7 @@ import PerfilTienda from './pages/PerfilTienda';
 import Login from './pages/Login';
 import Premium from './pages/Premium';
 import Metricas from './pages/Metricas';
+import TorneoLive from './pages/TorneoLive';
 
 
 function App() {
@@ -38,6 +39,7 @@ function App() {
         <Route path="/registro" element={<Login />} />
         <Route path="/premium" element={<Premium />} />
         <Route path="/metricas" element={<Metricas />} />
+        <Route path="/torneo/:id/live" element={<TorneoLive />} />
         
                  
       </Routes>

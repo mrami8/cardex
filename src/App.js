@@ -16,7 +16,7 @@ import Login from './pages/Login';
 import Premium from './pages/Premium';
 import Metricas from './pages/Metricas';
 import TorneoLive from './pages/TorneoLive';
-
+import ConstructorCommander from './pages/ConstructorCommander';
 
 function App() {
   return (
@@ -40,7 +40,7 @@ function App() {
         <Route path="/premium" element={<Premium />} />
         <Route path="/metricas" element={<Metricas />} />
         <Route path="/torneo/:id/live" element={<TorneoLive />} />
-        
+        <Route path="/constructor-commander" element={<ConstructorCommander />} />  
                  
       </Routes>
     </BrowserRouter>
